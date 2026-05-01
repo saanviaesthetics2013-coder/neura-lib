@@ -1,520 +1,868 @@
-:root {
-  --bg1: #f7f1ea;
-  --bg2: #f4dce7;
-
-  --glass: rgba(255, 255, 255, 0.45);
-  --glass2: rgba(255, 255, 255, 0.30);
-  --border: rgba(255, 255, 255, 0.35);
-  --shadow: rgba(0, 0, 0, 0.18);
-
-  --text: #1d1d22;
-  --muted: rgba(20, 20, 20, 0.65);
-
-  --cyan: #7fd6d2;
-  --rose: #d9a4b2;
-
-  --radius: 22px;
-  --radius-sm: 16px;
-}
-
-body.dark {
-  --bg1: #0d0d12;
-  --bg2: #13131b;
-
-  --glass: rgba(20, 20, 30, 0.60);
-  --glass2: rgba(20, 20, 30, 0.45);
-  --border: rgba(255, 255, 255, 0.12);
-  --shadow: rgba(0, 0, 0, 0.65);
-
-  --text: #ffffff;
-  --muted: rgba(255, 255, 255, 0.65);
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: system-ui, sans-serif;
-}
-
-body {
-  overflow: hidden;
-  background: linear-gradient(135deg, var(--bg1), var(--bg2));
-  color: var(--text);
-}
-
-/* BOOT */
-.boot {
-  position: fixed;
-  inset: 0;
-  background: linear-gradient(135deg, var(--bg1), var(--bg2));
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 99999;
-}
-
-.boot-card {
-  width: 90%;
-  max-width: 420px;
-  padding: 22px;
-  border-radius: var(--radius);
-  background: var(--glass);
-  border: 1px solid var(--border);
-  backdrop-filter: blur(16px);
-  box-shadow: 0 30px 80px var(--shadow);
-}
-
-.boot-title {
-  font-weight: 900;
-  letter-spacing: 6px;
-  font-size: 18px;
-  color: var(--cyan);
-  margin-bottom: 10px;
-}
-
-.boot-text {
-  font-size: 14px;
-  opacity: 0.8;
-}
-
-.boot-bar {
-  margin-top: 14px;
-  height: 10px;
-  width: 100%;
-  background: rgba(0, 0, 0, 0.08);
-  border-radius: 999px;
-  overflow: hidden;
-}
-
-.boot-fill {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, var(--cyan), var(--rose));
-  transition: 0.2s;
-}
-
-/* DESKTOP */
-.desktop {
-  display: none;
-  width: 100vw;
-  height: 100vh;
-  position: relative;
-}
-
-/* TOPBAR */
-.topbar {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 46px;
-  padding: 0 18px;
-  background: var(--glass2);
-  border-bottom: 1px solid var(--border);
-  backdrop-filter: blur(16px);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.brand-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--cyan);
-  box-shadow: 0 0 15px var(--cyan);
-}
-
-.brand-name {
-  font-weight: 900;
-  letter-spacing: 4px;
-  font-size: 12px;
-}
-
-#clock {
-  font-size: 13px;
-  opacity: 0.8;
-}
-
-/* ICONS */
-.desktop-icons {
-  position: absolute;
-  top: 70px;
-  left: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.desktop-icon {
-  width: 92px;
-  padding: 10px;
-  border-radius: 16px;
-  text-align: center;
-  cursor: pointer;
-  transition: 0.25s ease;
-  user-select: none;
-}
-
-.desktop-icon:hover {
-  background: rgba(255, 255, 255, 0.18);
-  transform: translateY(-3px);
-}
-
-.desktop-icon span {
-  display: block;
-  font-size: 12px;
-  margin-top: 6px;
-  opacity: 0.8;
-}
-
-/* TASKBAR */
-.taskbar {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 58px;
-  padding: 0 12px;
-  background: var(--glass2);
-  border-top: 1px solid var(--border);
-  backdrop-filter: blur(18px);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.start-btn {
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
-  border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.25);
-  cursor: pointer;
-  transition: 0.2s ease;
-}
-
-.start-btn:hover {
-  transform: translateY(-2px);
-  border-color: var(--cyan);
-}
-
-.task-apps {
-  display: flex;
-  gap: 10px;
-  flex: 1;
-}
-
-.task-item {
-  padding: 10px 14px;
-  border-radius: 14px;
-  border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.20);
-  cursor: pointer;
-  transition: 0.2s ease;
-  font-size: 13px;
-}
-
-.task-item.active {
-  border-color: var(--cyan);
-  box-shadow: 0 0 18px rgba(127, 214, 210, 0.25);
-}
-
-/* START MENU */
-.start-menu {
-  position: absolute;
-  bottom: 70px;
-  left: 12px;
-  width: 260px;
-  padding: 16px;
-  border-radius: var(--radius);
-  background: var(--glass);
-  border: 1px solid var(--border);
-  backdrop-filter: blur(18px);
-  display: none;
-  box-shadow: 0 20px 70px var(--shadow);
-}
-
-.start-title {
-  font-weight: 800;
-  margin-bottom: 10px;
-  letter-spacing: 1px;
-}
-
-.start-menu button {
-  width: 100%;
-  padding: 10px;
-  margin-top: 8px;
-  border-radius: 14px;
-  border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.20);
-  cursor: pointer;
-  transition: 0.2s ease;
-  text-align: left;
-}
-
-.start-menu button:hover {
-  border-color: var(--cyan);
-}
-
-/* WINDOWS */
-.window {
-  position: absolute;
-  width: 520px;
-  height: 430px;
-  border-radius: var(--radius);
-  background: var(--glass);
-  border: 1px solid var(--border);
-  backdrop-filter: blur(18px);
-  box-shadow: 0 30px 90px var(--shadow);
-  overflow: hidden;
-  animation: popIn 0.2s ease;
-}
-
-@keyframes popIn {
-  from { transform: scale(0.96); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-.win-bar {
-  height: 44px;
-  padding: 0 14px;
-  background: rgba(255, 255, 255, 0.14);
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: grab;
-  user-select: none;
-}
-
-.win-title {
-  font-weight: 800;
-  font-size: 13px;
-  letter-spacing: 1px;
-}
-
-.win-actions {
-  display: flex;
-  gap: 8px;
-}
-
-.win-actions button {
-  width: 30px;
-  height: 30px;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.20);
-  cursor: pointer;
-  transition: 0.2s ease;
-}
-
-.win-actions button:hover {
-  border-color: var(--cyan);
-}
-
-.win-body {
-  height: calc(100% - 44px);
-  padding: 16px;
-  overflow: auto;
-}
-
-/* LIST PANEL */
-.list-panel {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.item-card {
-  padding: 14px;
-  border-radius: 18px;
-  border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.18);
-  cursor: pointer;
-  transition: 0.2s ease;
-}
-
-.item-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--rose);
-}
-
-.item-card h3 {
-  font-size: 14px;
-  margin-bottom: 6px;
-}
-
-.item-card p {
-  font-size: 12px;
-  opacity: 0.75;
-}
-
-/* EMY */
-.emy {
-  position: fixed;
-  bottom: 80px;
-  right: 24px;
-  z-index: 9999;
-  display: flex;
-  align-items: flex-end;
-  gap: 10px;
-  animation: emyFloat 3.2s infinite ease-in-out;
-}
-
-@keyframes emyFloat {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-.emy-bubble {
-  max-width: 220px;
-  padding: 12px 14px;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.75);
-  border: 1px solid var(--border);
-  backdrop-filter: blur(12px);
-  font-size: 12px;
-  box-shadow: 0 20px 60px var(--shadow);
-  animation: bubblePop 0.3s ease;
-}
-
-@keyframes bubblePop {
-  from { transform: scale(0.92); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-.emy-body {
-  width: 78px;
-  height: 78px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--rose), var(--cyan));
-  position: relative;
-  box-shadow: 0 20px 60px var(--shadow);
-}
-
-.emy-face {
-  position: absolute;
-  top: 20px;
-  left: 18px;
-  width: 42px;
-  height: 42px;
-}
-
-.emy-eye {
-  width: 10px;
-  height: 14px;
-  background: #111;
-  border-radius: 50%;
-  position: absolute;
-  top: 6px;
-}
-
-.emy-eye.left { left: 4px; }
-.emy-eye.right { right: 4px; }
-
-.emy-eye::after {
-  content: "";
-  width: 4px;
-  height: 4px;
-  background: white;
-  border-radius: 50%;
-  position: absolute;
-  top: 2px;
-  left: 2px;
-}
-
-.emy-blush {
-  width: 10px;
-  height: 6px;
-  background: rgba(255, 180, 200, 0.7);
-  border-radius: 50%;
-  position: absolute;
-  top: 26px;
-}
-
-.emy-blush.left { left: 0px; }
-.emy-blush.right { right: 0px; }
-
-.emy-beak {
-  width: 12px;
-  height: 8px;
-  background: #ffcf70;
-  border-radius: 0 0 10px 10px;
-  position: absolute;
-  top: 22px;
-  left: 15px;
-}
-
-.emy-wing {
-  width: 24px;
-  height: 18px;
-  background: rgba(255, 255, 255, 0.30);
-  position: absolute;
-  top: 30px;
-  border-radius: 50%;
-  animation: wingFlap 1.2s infinite ease-in-out;
-}
-
-.emy-wing.left { left: -10px; transform-origin: right; }
-.emy-wing.right { right: -10px; transform-origin: left; }
-
-@keyframes wingFlap {
-  0%,100% { transform: rotate(10deg); }
-  50% { transform: rotate(-18deg); }
-}
-
-/* CONTEXT MENU */
-.context-menu {
-  position: fixed;
-  width: 240px;
-  padding: 10px;
-  border-radius: 18px;
-  background: var(--glass);
-  border: 1px solid var(--border);
-  backdrop-filter: blur(16px);
-  display: none;
-  z-index: 999999;
-  box-shadow: 0 25px 80px var(--shadow);
-}
-
-.context-menu button {
-  width: 100%;
-  padding: 10px;
-  margin-top: 6px;
-  border-radius: 14px;
-  border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.20);
-  cursor: pointer;
-  text-align: left;
-  transition: 0.2s ease;
-}
-
-.context-menu button:hover {
-  border-color: var(--cyan);
-}
-
-/* RESPONSIVE */
-@media (max-width: 650px) {
-  .window {
-    width: 92%;
-    height: 70%;
-    left: 4% !important;
-    top: 70px !important;
+/* ============================
+   WEBOS PRO v4 SYSTEM ENGINE
+   ============================ */
+
+const boot = document.getElementById("boot");
+const bootFill = document.getElementById("bootFill");
+const bootText = document.getElementById("bootText");
+const desktop = document.getElementById("desktop");
+
+const windowsContainer = document.getElementById("windows");
+const taskApps = document.getElementById("taskApps");
+
+const startMenu = document.getElementById("startMenu");
+const contextMenu = document.getElementById("contextMenu");
+
+const emyBubble = document.getElementById("emyBubble");
+
+let zIndexCounter = 10;
+let themeDark = false;
+
+const installedGames = JSON.parse(localStorage.getItem("installedGames") || "{}");
+
+/* ============================
+   BOOT SYSTEM
+   ============================ */
+const bootMessages = [
+  "Checking system modules...",
+  "Loading WebOS interface...",
+  "Starting apps engine...",
+  "Mounting desktop...",
+  "Almost ready..."
+];
+
+let bootProgress = 0;
+let bootMsgIndex = 0;
+
+const bootTimer = setInterval(() => {
+  bootProgress += 10;
+  bootFill.style.width = bootProgress + "%";
+
+  if (bootMsgIndex < bootMessages.length) {
+    bootText.innerText = bootMessages[bootMsgIndex];
+    bootMsgIndex++;
   }
 
-  .desktop-icons {
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: 90%;
+  if (bootProgress >= 100) {
+    clearInterval(bootTimer);
+    setTimeout(() => {
+      boot.style.display = "none";
+      desktop.style.display = "block";
+      emy("Welcome to WebOS. Double click any app to begin.");
+    }, 600);
+  }
+}, 400);
+
+/* ============================
+   CLOCK
+   ============================ */
+function updateClock() {
+  document.getElementById("clock").innerText = new Date().toLocaleTimeString();
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+/* ============================
+   EMY SYSTEM
+   ============================ */
+function emy(text) {
+  emyBubble.innerText = text;
+}
+
+/* ============================
+   START MENU
+   ============================ */
+function toggleStartMenu() {
+  startMenu.style.display = startMenu.style.display === "block" ? "none" : "block";
+}
+
+document.addEventListener("click", (e) => {
+  if (!startMenu.contains(e.target) && !e.target.classList.contains("start-btn")) {
+    startMenu.style.display = "none";
+  }
+});
+
+/* ============================
+   CONTEXT MENU
+   ============================ */
+desktop.addEventListener("contextmenu", (e) => {
+  e.preventDefault();
+  contextMenu.style.display = "block";
+  contextMenu.style.left = e.clientX + "px";
+  contextMenu.style.top = e.clientY + "px";
+});
+
+document.addEventListener("click", () => {
+  contextMenu.style.display = "none";
+});
+
+/* ============================
+   WINDOW SYSTEM
+   ============================ */
+let dragging = null;
+
+function createWindow(appId, title, contentHTML) {
+  const win = document.createElement("div");
+  win.className = "window";
+  win.dataset.app = appId;
+  win.style.left = 150 + Math.random() * 150 + "px";
+  win.style.top = 100 + Math.random() * 120 + "px";
+  win.style.zIndex = ++zIndexCounter;
+
+  win.innerHTML = `
+    <div class="win-bar">
+      <div class="win-title">${title}</div>
+      <div class="win-actions">
+        <button onclick="minimizeWindow('${appId}')">─</button>
+        <button onclick="maximizeWindow('${appId}')">▢</button>
+        <button onclick="closeWindow('${appId}')">✕</button>
+      </div>
+    </div>
+    <div class="win-body">${contentHTML}</div>
+  `;
+
+  win.addEventListener("mousedown", () => focusWindow(win));
+
+  win.querySelector(".win-bar").addEventListener("mousedown", (e) => {
+    focusWindow(win);
+    dragging = {
+      win,
+      offsetX: e.clientX - win.offsetLeft,
+      offsetY: e.clientY - win.offsetTop
+    };
+  });
+
+  windowsContainer.appendChild(win);
+  addTaskbarApp(appId, title);
+
+  return win;
+}
+
+document.addEventListener("mousemove", (e) => {
+  if (!dragging) return;
+  dragging.win.style.left = e.clientX - dragging.offsetX + "px";
+  dragging.win.style.top = e.clientY - dragging.offsetY + "px";
+});
+
+document.addEventListener("mouseup", () => dragging = null);
+
+function focusWindow(win) {
+  win.style.zIndex = ++zIndexCounter;
+
+  document.querySelectorAll(".task-item").forEach(t => t.classList.remove("active"));
+  const task = document.querySelector(`.task-item[data-app="${win.dataset.app}"]`);
+  if (task) task.classList.add("active");
+}
+
+function closeWindow(appId) {
+  const win = document.querySelector(`.window[data-app="${appId}"]`);
+  if (win) win.remove();
+
+  const task = document.querySelector(`.task-item[data-app="${appId}"]`);
+  if (task) task.remove();
+
+  emy("Closed app.");
+}
+
+function minimizeWindow(appId) {
+  const win = document.querySelector(`.window[data-app="${appId}"]`);
+  if (win) win.style.display = "none";
+  emy("Window minimized.");
+}
+
+function maximizeWindow(appId) {
+  const win = document.querySelector(`.window[data-app="${appId}"]`);
+  if (!win) return;
+
+  if (win.dataset.max === "true") {
+    win.style.width = "520px";
+    win.style.height = "430px";
+    win.dataset.max = "false";
+  } else {
+    win.style.left = "10px";
+    win.style.top = "60px";
+    win.style.width = "calc(100% - 20px)";
+    win.style.height = "calc(100% - 130px)";
+    win.dataset.max = "true";
+  }
+}
+
+function addTaskbarApp(appId, title) {
+  if (document.querySelector(`.task-item[data-app="${appId}"]`)) return;
+
+  const btn = document.createElement("div");
+  btn.className = "task-item active";
+  btn.dataset.app = appId;
+  btn.innerText = title;
+
+  btn.onclick = () => {
+    const win = document.querySelector(`.window[data-app="${appId}"]`);
+    if (!win) return;
+
+    if (win.style.display === "none") win.style.display = "block";
+    focusWindow(win);
+  };
+
+  document.querySelectorAll(".task-item").forEach(t => t.classList.remove("active"));
+  taskApps.appendChild(btn);
+}
+
+/* ============================
+   THEME
+   ============================ */
+function toggleTheme() {
+  themeDark = !themeDark;
+  document.body.classList.toggle("dark");
+  emy(themeDark ? "Dark mode enabled." : "Light mode enabled.");
+}
+
+/* ============================
+   OPEN APPS
+   ============================ */
+function openApp(appId) {
+  startMenu.style.display = "none";
+
+  const existing = document.querySelector(`.window[data-app="${appId}"]`);
+  if (existing) {
+    existing.style.display = "block";
+    focusWindow(existing);
+    return;
   }
 
-  .emy {
-    display: none;
+  if (appId === "assistant") {
+    createWindow("assistant", "Assistant", assistantHTML());
+    emy("This is the assistant. Search any topic.");
   }
+
+  if (appId === "worldclock") {
+    createWindow("worldclock", "World Clock", worldClockHTML());
+    emy("Pick a country to view time.");
+    startWorldClock();
+  }
+
+  if (appId === "encyclopedia") {
+    createWindow("encyclopedia", "Encyclopedia", encyclopediaHTML());
+    emy("Search materials like plastic or glass.");
+  }
+
+  if (appId === "crafts") {
+    createWindow("crafts", "Crafts Studio", craftsHTML());
+    emy("Choose a craft to see steps.");
+  }
+
+  if (appId === "paint") {
+    createWindow("paint", "Paint", paintHTML());
+    emy("Use brush tools to create art.");
+    setupPaint();
+  }
+
+  if (appId === "music") {
+    createWindow("music", "Music Player", musicHTML());
+    emy("Play songs and read lyrics.");
+    setupMusic();
+  }
+
+  if (appId === "notes") {
+    createWindow("notes", "Notes", notesHTML());
+    emy("Your notes will auto-save.");
+    setupNotes();
+  }
+
+  if (appId === "games") {
+    createWindow("games", "Games Hub", gamesHTML());
+    emy("Install a game first, then play.");
+  }
+
+  if (appId === "snake") {
+    createWindow("snake", "Snake Game", snakeHTML());
+    emy("Use arrow keys to play snake.");
+    startSnake();
+  }
+
+  if (appId === "credits") {
+    createWindow("credits", "Credits", creditsHTML());
+    emy("Thank you for exploring WebOS.");
+  }
+}
+
+/* ============================
+   WORLD CLOCK APP
+   ============================ */
+const timezones = [
+  { name: "India", zone: "Asia/Kolkata" },
+  { name: "USA (New York)", zone: "America/New_York" },
+  { name: "Canada (Toronto)", zone: "America/Toronto" },
+  { name: "France (Paris)", zone: "Europe/Paris" },
+  { name: "Italy (Rome)", zone: "Europe/Rome" },
+  { name: "Japan (Tokyo)", zone: "Asia/Tokyo" },
+  { name: "UAE (Dubai)", zone: "Asia/Dubai" },
+  { name: "Australia (Sydney)", zone: "Australia/Sydney" }
+];
+
+let selectedZone = timezones[0].zone;
+
+function worldClockHTML() {
+  return `
+    <h2>World Clock</h2>
+    <p style="opacity:.75;margin-bottom:10px;">Select a country:</p>
+
+    <select id="tzSelect" style="width:100%;padding:10px;border-radius:14px;border:1px solid rgba(0,0,0,0.1)">
+      ${timezones.map(t => `<option value="${t.zone}">${t.name}</option>`).join("")}
+    </select>
+
+    <div style="margin-top:16px;padding:16px;border-radius:18px;background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.3);">
+      <div style="font-size:13px;opacity:.7;">Live Time</div>
+      <div id="worldTime" style="font-size:32px;font-weight:900;margin-top:6px;">--:--:--</div>
+    </div>
+  `;
+}
+
+function startWorldClock() {
+  const select = document.getElementById("tzSelect");
+  if (!select) return;
+
+  select.addEventListener("change", () => {
+    selectedZone = select.value;
+  });
+
+  setInterval(() => {
+    const el = document.getElementById("worldTime");
+    if (!el) return;
+    el.innerText = new Date().toLocaleTimeString("en-US", { timeZone: selectedZone });
+  }, 1000);
+}
+
+/* ============================
+   ENCYCLOPEDIA DATABASE
+   ============================ */
+const encyclopediaDB = {
+  plastic: {
+    title: "Plastic",
+    made: "Plastic is made from petroleum (crude oil) through polymerization.",
+    uses: "Used in bottles, packaging, toys, electronics, and daily products.",
+    dispose: "Dispose in recycling bins if clean. Avoid burning."
+  },
+  glass: {
+    title: "Glass",
+    made: "Glass is made by melting silica sand with soda ash and limestone.",
+    uses: "Used in bottles, windows, screens, and containers.",
+    dispose: "Recycle in glass bins. Avoid mixing with trash."
+  },
+  paper: {
+    title: "Paper",
+    made: "Paper is made from wood pulp or recycled paper fibers.",
+    uses: "Used for books, packaging, tissues, and writing.",
+    dispose: "Recycle if clean. Compost if uncoated."
+  },
+  metal: {
+    title: "Metal",
+    made: "Metal is extracted from ores using mining and refining.",
+    uses: "Used in tools, cans, buildings, electronics.",
+    dispose: "Recycle in scrap metal centers."
+  }
+};
+
+/* ENCYCLOPEDIA APP UI */
+function encyclopediaHTML() {
+  return `
+    <h2>Mini Encyclopedia</h2>
+    <p style="opacity:.75;margin-bottom:10px;">Type a topic like <b>plastic</b>, <b>glass</b>, <b>paper</b>.</p>
+
+    <input id="encyInput" placeholder="Search topic..."
+      style="width:100%;padding:12px;border-radius:14px;border:1px solid rgba(0,0,0,0.12);outline:none;margin-bottom:12px;"/>
+
+    <div id="encyResult"
+      style="padding:14px;border-radius:18px;background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.3);">
+      <div style="opacity:.7;">No topic selected.</div>
+    </div>
+  `;
+}
+
+document.addEventListener("input", (e) => {
+  if (e.target.id !== "encyInput") return;
+
+  const q = e.target.value.trim().toLowerCase();
+  const res = document.getElementById("encyResult");
+
+  if (!q) {
+    res.innerHTML = `<div style="opacity:.7;">No topic selected.</div>`;
+    return;
+  }
+
+  const item = encyclopediaDB[q];
+
+  if (!item) {
+    res.innerHTML = `<div style="opacity:.7;">No result found for "${q}".</div>`;
+    return;
+  }
+
+  res.innerHTML = `
+    <h3 style="margin-bottom:8px;">${item.title}</h3>
+    <p><b>How it's made:</b> ${item.made}</p>
+    <p style="margin-top:8px;"><b>Uses:</b> ${item.uses}</p>
+    <p style="margin-top:8px;"><b>Disposal:</b> ${item.dispose}</p>
+  `;
+});
+
+/* ============================
+   CRAFTS APP
+   ============================ */
+const craftsDB = [
+  {
+    title: "Paper Butterfly",
+    difficulty: "Easy",
+    materials: ["Paper", "Scissors", "Markers"],
+    steps: [
+      "Fold the paper in half.",
+      "Draw butterfly wings on the folded side.",
+      "Cut along the outline carefully.",
+      "Open the fold and decorate the butterfly.",
+      "Add string if you want to hang it."
+    ]
+  },
+  {
+    title: "Paper Plane",
+    difficulty: "Easy",
+    materials: ["A4 Paper"],
+    steps: [
+      "Fold the paper in half lengthwise.",
+      "Fold top corners inward to form a triangle.",
+      "Fold again inward to sharpen the nose.",
+      "Fold the plane in half.",
+      "Fold wings down evenly and test fly."
+    ]
+  }
+];
+
+function craftsHTML() {
+  return `
+    <h2>Crafts Studio</h2>
+    <p style="opacity:.75;margin-bottom:12px;">Explore crafts and view steps.</p>
+
+    <div class="list-panel">
+      ${craftsDB.map((c, i) => `
+        <div class="item-card" onclick="openCraft(${i})">
+          <h3>${c.title}</h3>
+          <p>Difficulty: ${c.difficulty}</p>
+        </div>
+      `).join("")}
+    </div>
+
+    <div id="craftDetail" style="margin-top:14px;"></div>
+  `;
+}
+
+function openCraft(i) {
+  const c = craftsDB[i];
+  const detail = document.getElementById("craftDetail");
+
+  detail.innerHTML = `
+    <div style="padding:14px;border-radius:18px;background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.3);">
+      <h3>${c.title}</h3>
+      <p style="opacity:.8;margin-top:6px;"><b>Materials:</b> ${c.materials.join(", ")}</p>
+
+      <h4 style="margin-top:12px;">Steps</h4>
+      <ol style="margin-top:8px;padding-left:20px;">
+        ${c.steps.map(s => `<li style="margin-top:6px;">${s}</li>`).join("")}
+      </ol>
+    </div>
+  `;
+
+  emy("Great! Follow the steps carefully.");
+}
+
+/* ============================
+   NOTES APP
+   ============================ */
+function notesHTML() {
+  return `
+    <h2>Notes</h2>
+    <p style="opacity:.75;margin-bottom:10px;">Your notes are saved automatically.</p>
+
+    <textarea id="notesBox"
+      style="width:100%;height:240px;padding:12px;border-radius:18px;border:1px solid rgba(0,0,0,0.12);outline:none;"></textarea>
+
+    <div style="margin-top:10px;opacity:.7;font-size:12px;">
+      Saved in localStorage.
+    </div>
+  `;
+}
+
+function setupNotes() {
+  const box = document.getElementById("notesBox");
+  if (!box) return;
+
+  box.value = localStorage.getItem("webos_notes") || "";
+
+  box.addEventListener("input", () => {
+    localStorage.setItem("webos_notes", box.value);
+  });
+}
+
+/* ============================
+   MUSIC APP
+   ============================ */
+const musicDB = [
+  {
+    title: "Soft Sky",
+    file: "song1.mp3",
+    lyrics: `Soft sky above me
+Calm wind around
+I close my eyes
+No noise, no sound...`
+  },
+  {
+    title: "Rose Light",
+    file: "song2.mp3",
+    lyrics: `Rose light falling
+Dreams in motion
+Heart is quiet
+Like the ocean...`
+  }
+];
+
+function musicHTML() {
+  return `
+    <h2>Music Player</h2>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;">
+      <div style="padding:14px;border-radius:18px;background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.3);">
+        <h3>Playlist</h3>
+        <div id="songList" style="margin-top:10px;display:flex;flex-direction:column;gap:8px;"></div>
+      </div>
+
+      <div style="padding:14px;border-radius:18px;background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.3);">
+        <h3>Lyrics</h3>
+        <pre id="lyricsBox" style="margin-top:10px;white-space:pre-wrap;font-size:12px;opacity:.85;"></pre>
+      </div>
+    </div>
+
+    <div style="margin-top:14px;padding:14px;border-radius:18px;background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.3);">
+      <audio id="audioPlayer" controls style="width:100%;"></audio>
+
+      <div style="margin-top:10px;">
+        <label style="font-size:12px;opacity:.7;">Volume</label>
+        <input id="volSlider" type="range" min="0" max="1" step="0.01" value="0.7" style="width:100%;">
+      </div>
+    </div>
+  `;
+}
+
+function setupMusic() {
+  const list = document.getElementById("songList");
+  const audio = document.getElementById("audioPlayer");
+  const lyrics = document.getElementById("lyricsBox");
+  const vol = document.getElementById("volSlider");
+
+  if (!list || !audio || !lyrics || !vol) return;
+
+  list.innerHTML = "";
+
+  musicDB.forEach((s) => {
+    const btn = document.createElement("button");
+    btn.innerText = "▶ " + s.title;
+    btn.style.padding = "10px";
+    btn.style.borderRadius = "14px";
+    btn.style.border = "1px solid rgba(255,255,255,0.3)";
+    btn.style.background = "rgba(255,255,255,0.2)";
+    btn.style.cursor = "pointer";
+
+    btn.onclick = () => {
+      audio.src = s.file;
+      lyrics.innerText = s.lyrics;
+      audio.play();
+      emy("Now playing: " + s.title);
+    };
+
+    list.appendChild(btn);
+  });
+
+  vol.addEventListener("input", () => {
+    audio.volume = vol.value;
+  });
+}
+
+/* ============================
+   GAMES HUB + INSTALL SYSTEM
+   ============================ */
+const gameDB = [
+  { id: "snake", name: "Snake Game" }
+];
+
+function gamesHTML() {
+  return `
+    <h2>Games Hub</h2>
+    <p style="opacity:.75;margin-bottom:12px;">Install games before playing.</p>
+
+    <div class="list-panel">
+      ${gameDB.map(g => `
+        <div class="item-card">
+          <h3>${g.name}</h3>
+          <p>${installedGames[g.id] ? "Installed ✅" : "Not installed ❌"}</p>
+
+          ${
+            installedGames[g.id]
+              ? `<button style="margin-top:10px;width:100%;padding:10px;border-radius:14px;border:1px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.2);cursor:pointer;"
+                   onclick="openApp('${g.id}')">Play</button>`
+              : `<button style="margin-top:10px;width:100%;padding:10px;border-radius:14px;border:1px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.2);cursor:pointer;"
+                   onclick="installGame('${g.id}')">Install</button>`
+          }
+        </div>
+      `).join("")}
+    </div>
+
+    <div id="installStatus" style="margin-top:14px;"></div>
+  `;
+}
+
+function installGame(id) {
+  const status = document.getElementById("installStatus");
+  if (!status) return;
+
+  emy("Installing game... please wait.");
+
+  status.innerHTML = `
+    <div style="padding:14px;border-radius:18px;background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.3);">
+      Installing... <span id="installPercent">0%</span>
+      <div style="height:10px;background:rgba(0,0,0,0.08);border-radius:999px;margin-top:10px;overflow:hidden;">
+        <div id="installBar" style="height:100%;width:0%;background:linear-gradient(90deg,var(--cyan),var(--rose));"></div>
+      </div>
+    </div>
+  `;
+
+  let p = 0;
+  const bar = document.getElementById("installBar");
+  const percent = document.getElementById("installPercent");
+
+  const t = setInterval(() => {
+    p += 10;
+    bar.style.width = p + "%";
+    percent.innerText = p + "%";
+
+    if (p >= 100) {
+      clearInterval(t);
+      installedGames[id] = true;
+      localStorage.setItem("installedGames", JSON.stringify(installedGames));
+      emy("Installed successfully!");
+      openApp("games");
+    }
+  }, 250);
+}
+
+/* ============================
+   SNAKE GAME
+   ============================ */
+function snakeHTML() {
+  return `
+    <h2>Snake Game</h2>
+    <p style="opacity:.75;">Use arrow keys to move.</p>
+
+    <canvas id="snakeCanvas" width="360" height="260"
+      style="margin-top:14px;border-radius:18px;border:1px solid rgba(255,255,255,0.3);background:rgba(0,0,0,0.08);"></canvas>
+
+    <div style="margin-top:10px;font-weight:800;">Score: <span id="snakeScore">0</span></div>
+  `;
+}
+
+let snakeInterval = null;
+
+function startSnake() {
+  const canvas = document.getElementById("snakeCanvas");
+  const scoreEl = document.getElementById("snakeScore");
+  if (!canvas || !scoreEl) return;
+
+  const ctx = canvas.getContext("2d");
+
+  let grid = 20;
+  let snake = [{ x: 160, y: 120 }];
+  let dir = { x: grid, y: 0 };
+  let food = { x: 200, y: 120 };
+  let score = 0;
+
+  function randomFood() {
+    food.x = Math.floor(Math.random() * (canvas.width / grid)) * grid;
+    food.y = Math.floor(Math.random() * (canvas.height / grid)) * grid;
+  }
+
+  document.onkeydown = (e) => {
+    if (e.key === "ArrowUp" && dir.y === 0) dir = { x: 0, y: -grid };
+    if (e.key === "ArrowDown" && dir.y === 0) dir = { x: 0, y: grid };
+    if (e.key === "ArrowLeft" && dir.x === 0) dir = { x: -grid, y: 0 };
+    if (e.key === "ArrowRight" && dir.x === 0) dir = { x: grid, y: 0 };
+  };
+
+  if (snakeInterval) clearInterval(snakeInterval);
+
+  snakeInterval = setInterval(() => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    let head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
+
+    if (head.x < 0) head.x = canvas.width - grid;
+    if (head.x >= canvas.width) head.x = 0;
+    if (head.y < 0) head.y = canvas.height - grid;
+    if (head.y >= canvas.height) head.y = 0;
+
+    for (let i = 1; i < snake.length; i++) {
+      if (head.x === snake[i].x && head.y === snake[i].y) {
+        snake = [{ x: 160, y: 120 }];
+        dir = { x: grid, y: 0 };
+        score = 0;
+        scoreEl.innerText = score;
+        randomFood();
+        emy("Oops! You crashed. Try again.");
+        return;
+      }
+    }
+
+    snake.unshift(head);
+
+    if (head.x === food.x && head.y === food.y) {
+      score++;
+      scoreEl.innerText = score;
+      randomFood();
+    } else {
+      snake.pop();
+    }
+
+    ctx.fillStyle = "#7fd6d2";
+    snake.forEach(p => ctx.fillRect(p.x, p.y, grid - 2, grid - 2));
+
+    ctx.fillStyle = "#d9a4b2";
+    ctx.fillRect(food.x, food.y, grid - 2, grid - 2);
+  }, 120);
+}
+
+/* ============================
+   PAINT APP
+   ============================ */
+function paintHTML() {
+  return `
+    <h2>Paint</h2>
+
+    <div style="display:flex;gap:10px;align-items:center;margin-top:10px;">
+      <input type="color" id="paintColor" value="#7fd6d2" />
+      <input type="range" id="paintSize" min="2" max="25" value="6" />
+      <button onclick="paintClear()" style="padding:10px;border-radius:14px;border:1px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.2);cursor:pointer;">Clear</button>
+      <button onclick="paintSave()" style="padding:10px;border-radius:14px;border:1px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.2);cursor:pointer;">Save</button>
+    </div>
+
+    <canvas id="paintCanvas" width="420" height="260"
+      style="margin-top:14px;border-radius:18px;border:1px solid rgba(255,255,255,0.3);background:white;"></canvas>
+  `;
+}
+
+let paintCtx = null;
+let painting = false;
+
+function setupPaint() {
+  const canvas = document.getElementById("paintCanvas");
+  if (!canvas) return;
+
+  paintCtx = canvas.getContext("2d");
+
+  canvas.addEventListener("mousedown", () => painting = true);
+  canvas.addEventListener("mouseup", () => painting = false);
+  canvas.addEventListener("mouseleave", () => painting = false);
+
+  canvas.addEventListener("mousemove", (e) => {
+    if (!painting) return;
+
+    const color = document.getElementById("paintColor").value;
+    const size = document.getElementById("paintSize").value;
+
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    paintCtx.fillStyle = color;
+    paintCtx.beginPath();
+    paintCtx.arc(x, y, size / 2, 0, Math.PI * 2);
+    paintCtx.fill();
+  });
+}
+
+function paintClear() {
+  const canvas = document.getElementById("paintCanvas");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  emy("Canvas cleared.");
+}
+
+function paintSave() {
+  const canvas = document.getElementById("paintCanvas");
+  if (!canvas) return;
+
+  const link = document.createElement("a");
+  link.download = "emy-art.png";
+  link.href = canvas.toDataURL("image/png");
+  link.click();
+
+  emy("Saved your artwork!");
+}
+
+/* ============================
+   ASSISTANT APP
+   ============================ */
+function assistantHTML() {
+  return `
+    <h2>Assistant</h2>
+    <p style="opacity:.75;margin-bottom:12px;">
+      Ask about materials like plastic, glass, metal, paper, etc.
+    </p>
+
+    <input id="assistantInput" placeholder="Type a topic..."
+      style="width:100%;padding:12px;border-radius:14px;border:1px solid rgba(0,0,0,0.12);outline:none;" />
+
+    <div id="assistantOut"
+      style="margin-top:12px;padding:14px;border-radius:18px;background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.3);">
+      <div style="opacity:.7;">Waiting for input...</div>
+    </div>
+  `;
+}
+
+document.addEventListener("input", (e) => {
+  if (e.target.id !== "assistantInput") return;
+
+  const q = e.target.value.trim().toLowerCase();
+  const out = document.getElementById("assistantOut");
+
+  if (!q) {
+    out.innerHTML = `<div style="opacity:.7;">Waiting for input...</div>`;
+    return;
+  }
+
+  const item = encyclopediaDB[q];
+
+  if (!item) {
+    out.innerHTML = `<div style="opacity:.7;">I don't know "${q}" yet. Add it to the database.</div>`;
+    emy("I couldn't find that topic.");
+    return;
+  }
+
+  out.innerHTML = `
+    <h3>${item.title}</h3>
+    <p style="margin-top:8px;"><b>How it's made:</b> ${item.made}</p>
+    <p style="margin-top:8px;"><b>Uses:</b> ${item.uses}</p>
+    <p style="margin-top:8px;"><b>Disposal:</b> ${item.dispose}</p>
+  `;
+
+  emy("Here is what I found about " + item.title + ".");
+});
+
+/* ============================
+   CREDITS APP
+   ============================ */
+function creditsHTML() {
+  return `
+    <div style="height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;">
+      <div style="font-size:22px;font-weight:900;letter-spacing:2px;color:var(--cyan);">
+        Created by Saanvi
+      </div>
+      <div style="margin-top:10px;opacity:.65;font-size:13px;">
+        WebOS Pro v4
+      </div>
+    </div>
+  `;
 }
