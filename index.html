@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WebOS Pro v4</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- BOOT SCREEN -->
+  <div class="boot" id="boot">
+    <div class="boot-card">
+      <div class="boot-title">WEB OS</div>
+      <div class="boot-text" id="bootText">Initializing...</div>
+      <div class="boot-bar">
+        <div class="boot-fill" id="bootFill"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT CLICK MENU -->
+  <div class="context-menu" id="contextMenu">
+    <button onclick="openApp('assistant')">🤖 Assistant</button>
+    <button onclick="openApp('worldclock')">🕒 World Clock</button>
+    <button onclick="openApp('encyclopedia')">📚 Encyclopedia</button>
+    <button onclick="openApp('crafts')">✂️ Crafts</button>
+    <button onclick="openApp('paint')">🎨 Paint</button>
+    <button onclick="openApp('music')">🎵 Music</button>
+    <button onclick="openApp('notes')">📝 Notes</button>
+    <button onclick="openApp('games')">🎮 Games</button>
+    <button onclick="openApp('credits')">🌸 Credits</button>
+    <button onclick="toggleTheme()">🌗 Toggle Theme</button>
+  </div>
+
+  <!-- EMY GUIDE -->
+  <div class="emy" id="emy">
+    <div class="emy-bubble" id="emyBubble">Hi, I'm Emmy — your guide.</div>
+
+    <div class="emy-body">
+      <div class="emy-face">
+        <div class="emy-eye left"></div>
+        <div class="emy-eye right"></div>
+        <div class="emy-blush left"></div>
+        <div class="emy-blush right"></div>
+        <div class="emy-beak"></div>
+      </div>
+
+      <div class="emy-wing left"></div>
+      <div class="emy-wing right"></div>
+    </div>
+  </div>
+
+  <!-- DESKTOP -->
+  <div class="desktop" id="desktop">
+
+    <!-- TOP BAR -->
+    <div class="topbar">
+      <div class="brand">
+        <span class="brand-dot"></span>
+        <span class="brand-name">WEBOS</span>
+      </div>
+      <div class="top-right">
+        <span id="clock"></span>
+      </div>
+    </div>
+
+    <!-- DESKTOP ICONS -->
+    <div class="desktop-icons">
+      <div class="desktop-icon" ondblclick="openApp('assistant')">🤖<span>Assistant</span></div>
+      <div class="desktop-icon" ondblclick="openApp('worldclock')">🕒<span>World Clock</span></div>
+      <div class="desktop-icon" ondblclick="openApp('encyclopedia')">📚<span>Encyclopedia</span></div>
+      <div class="desktop-icon" ondblclick="openApp('crafts')">✂️<span>Crafts</span></div>
+      <div class="desktop-icon" ondblclick="openApp('paint')">🎨<span>Paint</span></div>
+      <div class="desktop-icon" ondblclick="openApp('music')">🎵<span>Music</span></div>
+      <div class="desktop-icon" ondblclick="openApp('notes')">📝<span>Notes</span></div>
+      <div class="desktop-icon" ondblclick="openApp('games')">🎮<span>Games</span></div>
+      <div class="desktop-icon" ondblclick="openApp('credits')">🌸<span>Credits</span></div>
+    </div>
+
+    <!-- WINDOWS -->
+    <div id="windows"></div>
+
+    <!-- TASKBAR -->
+    <div class="taskbar">
+      <button class="start-btn" onclick="toggleStartMenu()">☰</button>
+      <div class="task-apps" id="taskApps"></div>
+    </div>
+
+    <!-- START MENU -->
+    <div class="start-menu" id="startMenu">
+      <div class="start-title">Apps</div>
+      <button onclick="openApp('assistant')">🤖 Assistant</button>
+      <button onclick="openApp('worldclock')">🕒 World Clock</button>
+      <button onclick="openApp('encyclopedia')">📚 Encyclopedia</button>
+      <button onclick="openApp('crafts')">✂️ Crafts</button>
+      <button onclick="openApp('paint')">🎨 Paint</button>
+      <button onclick="openApp('music')">🎵 Music</button>
+      <button onclick="openApp('notes')">📝 Notes</button>
+      <button onclick="openApp('games')">🎮 Games</button>
+      <button onclick="openApp('credits')">🌸 Credits</button>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
