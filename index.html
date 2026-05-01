@@ -3,49 +3,43 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WebOS Pro v4</title>
+  <title>WebOS Pro v5</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
+
+  <!-- ANIMATED WALLPAPER -->
+  <div class="wallpaper">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+  </div>
 
   <!-- BOOT SCREEN -->
   <div class="boot" id="boot">
     <div class="boot-card">
-      <div class="boot-title">WEB OS</div>
-      <div class="boot-text" id="bootText">Initializing...</div>
+      <div class="boot-logo">WEBOS</div>
+      <div class="boot-text" id="bootText">Starting system...</div>
       <div class="boot-bar">
         <div class="boot-fill" id="bootFill"></div>
       </div>
     </div>
   </div>
 
-  <!-- RIGHT CLICK MENU -->
-  <div class="context-menu" id="contextMenu">
-    <button onclick="openApp('assistant')">🤖 Assistant</button>
-    <button onclick="openApp('worldclock')">🕒 World Clock</button>
-    <button onclick="openApp('encyclopedia')">📚 Encyclopedia</button>
-    <button onclick="openApp('crafts')">✂️ Crafts</button>
-    <button onclick="openApp('paint')">🎨 Paint</button>
-    <button onclick="openApp('music')">🎵 Music</button>
-    <button onclick="openApp('notes')">📝 Notes</button>
-    <button onclick="openApp('games')">🎮 Games</button>
-    <button onclick="openApp('credits')">🌸 Credits</button>
-    <button onclick="toggleTheme()">🌗 Toggle Theme</button>
-  </div>
-
   <!-- EMY GUIDE -->
   <div class="emy" id="emy">
     <div class="emy-bubble" id="emyBubble">Hi, I'm Emmy — your guide.</div>
-
     <div class="emy-body">
       <div class="emy-face">
         <div class="emy-eye left"></div>
         <div class="emy-eye right"></div>
+        <div class="emy-lash left"></div>
+        <div class="emy-lash right"></div>
         <div class="emy-blush left"></div>
         <div class="emy-blush right"></div>
         <div class="emy-beak"></div>
       </div>
-
       <div class="emy-wing left"></div>
       <div class="emy-wing right"></div>
     </div>
@@ -56,49 +50,72 @@
 
     <!-- TOP BAR -->
     <div class="topbar">
-      <div class="brand">
-        <span class="brand-dot"></span>
-        <span class="brand-name">WEBOS</span>
+      <div class="top-left">
+        <span class="top-logo"></span>
+        <span class="top-name">WebOS</span>
       </div>
+
       <div class="top-right">
         <span id="clock"></span>
       </div>
     </div>
 
-    <!-- DESKTOP ICONS -->
-    <div class="desktop-icons">
-      <div class="desktop-icon" ondblclick="openApp('assistant')">🤖<span>Assistant</span></div>
-      <div class="desktop-icon" ondblclick="openApp('worldclock')">🕒<span>World Clock</span></div>
-      <div class="desktop-icon" ondblclick="openApp('encyclopedia')">📚<span>Encyclopedia</span></div>
-      <div class="desktop-icon" ondblclick="openApp('crafts')">✂️<span>Crafts</span></div>
-      <div class="desktop-icon" ondblclick="openApp('paint')">🎨<span>Paint</span></div>
-      <div class="desktop-icon" ondblclick="openApp('music')">🎵<span>Music</span></div>
-      <div class="desktop-icon" ondblclick="openApp('notes')">📝<span>Notes</span></div>
-      <div class="desktop-icon" ondblclick="openApp('games')">🎮<span>Games</span></div>
-      <div class="desktop-icon" ondblclick="openApp('credits')">🌸<span>Credits</span></div>
-    </div>
-
-    <!-- WINDOWS -->
+    <!-- WINDOWS CONTAINER -->
     <div id="windows"></div>
 
-    <!-- TASKBAR -->
-    <div class="taskbar">
-      <button class="start-btn" onclick="toggleStartMenu()">☰</button>
-      <div class="task-apps" id="taskApps"></div>
-    </div>
+    <!-- DOCK -->
+    <div class="dock" id="dock">
 
-    <!-- START MENU -->
-    <div class="start-menu" id="startMenu">
-      <div class="start-title">Apps</div>
-      <button onclick="openApp('assistant')">🤖 Assistant</button>
-      <button onclick="openApp('worldclock')">🕒 World Clock</button>
-      <button onclick="openApp('encyclopedia')">📚 Encyclopedia</button>
-      <button onclick="openApp('crafts')">✂️ Crafts</button>
-      <button onclick="openApp('paint')">🎨 Paint</button>
-      <button onclick="openApp('music')">🎵 Music</button>
-      <button onclick="openApp('notes')">📝 Notes</button>
-      <button onclick="openApp('games')">🎮 Games</button>
-      <button onclick="openApp('credits')">🌸 Credits</button>
+      <div class="dock-item" onclick="openApp('assistant')">
+        <div class="dock-icon">🧠</div>
+        <span>Assistant</span>
+      </div>
+
+      <div class="dock-item" onclick="openApp('worldclock')">
+        <div class="dock-icon">🌍</div>
+        <span>Clock</span>
+      </div>
+
+      <div class="dock-item" onclick="openApp('encyclopedia')">
+        <div class="dock-icon">📚</div>
+        <span>Ency</span>
+      </div>
+
+      <div class="dock-item" onclick="openApp('crafts')">
+        <div class="dock-icon">✂️</div>
+        <span>Crafts</span>
+      </div>
+
+      <div class="dock-item" onclick="openApp('paint')">
+        <div class="dock-icon">🎨</div>
+        <span>Paint</span>
+      </div>
+
+      <div class="dock-item" onclick="openApp('notes')">
+        <div class="dock-icon">📝</div>
+        <span>Notes</span>
+      </div>
+
+      <div class="dock-item" onclick="openApp('games')">
+        <div class="dock-icon">🎮</div>
+        <span>Games</span>
+      </div>
+
+      <div class="dock-item" onclick="openApp('voice')">
+        <div class="dock-icon">🎙️</div>
+        <span>Voice</span>
+      </div>
+
+      <div class="dock-item" onclick="openApp('fakenews')">
+        <div class="dock-icon">📰</div>
+        <span>News</span>
+      </div>
+
+      <div class="dock-item" onclick="openApp('credits')">
+        <div class="dock-icon">🌸</div>
+        <span>Credits</span>
+      </div>
+
     </div>
 
   </div>
