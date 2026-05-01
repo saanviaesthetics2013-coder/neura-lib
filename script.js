@@ -1,6 +1,6 @@
-/* ==========================
-   WEBOS PRO v5 ENGINE
-   ========================== */
+/* ===============================
+   WEBOS PRO v5 - FIXED ENGINE
+   =============================== */
 
 const boot = document.getElementById("boot");
 const bootFill = document.getElementById("bootFill");
@@ -9,64 +9,76 @@ const bootText = document.getElementById("bootText");
 const windowsContainer = document.getElementById("windows");
 const emyBubble = document.getElementById("emyBubble");
 
-let zIndexCounter = 50;
+let zIndexCounter = 100;
 
+/* ===============================
+   EMY SPEAK
+   =============================== */
 function emy(text) {
+  if (!emyBubble) return;
   emyBubble.innerText = text;
 }
 
-/* ==========================
-   BOOT LOADER
-   ========================== */
+/* ===============================
+   CLOCK
+   =============================== */
+function updateClock() {
+  const el = document.getElementById("clock");
+  if (!el) return;
+
+  el.innerText = new Date().toLocaleString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+}
+
+setInterval(updateClock, 1000);
+updateClock();
+
+/* ===============================
+   BOOT SYSTEM
+   =============================== */
 window.onload = () => {
   let progress = 0;
+
   const messages = [
     "Checking system modules...",
     "Loading UI engine...",
-    "Mounting desktop...",
-    "Starting apps...",
-    "Done."
+    "Starting dock services...",
+    "Mounting apps...",
+    "Launching WebOS..."
   ];
 
-  let msg = 0;
+  let index = 0;
 
   const timer = setInterval(() => {
     progress += 20;
-    bootFill.style.width = progress + "%";
-    bootText.innerText = messages[msg] || "Loading...";
-    msg++;
+    if (bootFill) bootFill.style.width = progress + "%";
+    if (bootText) bootText.innerText = messages[index] || "Loading...";
+    index++;
 
     if (progress >= 100) {
       clearInterval(timer);
       setTimeout(() => {
-        boot.style.display = "none";
+        if (boot) boot.style.display = "none";
         emy("Hi, I'm Emmy — your guide. Tap the dock icons.");
-      }, 800);
+      }, 700);
     }
-  }, 550);
+  }, 600);
 };
 
-/* ==========================
-   TOP CLOCK
-   ========================== */
-function updateClock() {
-  document.getElementById("clock").innerText =
-    new Date().toLocaleString("en-US", { hour: "2-digit", minute: "2-digit" });
-}
-setInterval(updateClock, 1000);
-updateClock();
-
-/* ==========================
+/* ===============================
    WINDOW SYSTEM
-   ========================== */
+   =============================== */
 let dragging = null;
 
 function createWindow(appId, title, html) {
   const win = document.createElement("div");
   win.className = "window";
   win.dataset.app = appId;
-  win.style.left = 120 + Math.random() * 200 + "px";
-  win.style.top = 90 + Math.random() * 140 + "px";
+
+  win.style.left = 120 + Math.random() * 250 + "px";
+  win.style.top = 90 + Math.random() * 150 + "px";
   win.style.zIndex = ++zIndexCounter;
 
   win.innerHTML = `
@@ -76,8 +88,10 @@ function createWindow(appId, title, html) {
         <button class="min" onclick="minimizeWindow('${appId}')"></button>
         <button class="max" onclick="maximizeWindow('${appId}')"></button>
       </div>
+
       <div class="win-title">${title}</div>
-      <div style="width:60px;"></div>
+
+      <div style="width:70px;"></div>
     </div>
 
     <div class="win-body">${html}</div>
@@ -87,6 +101,8 @@ function createWindow(appId, title, html) {
 
   const bar = win.querySelector(".win-bar");
   bar.addEventListener("mousedown", (e) => {
+    focusWindow(win);
+
     dragging = {
       win,
       offsetX: e.clientX - win.offsetLeft,
@@ -100,6 +116,7 @@ function createWindow(appId, title, html) {
 
 document.addEventListener("mousemove", (e) => {
   if (!dragging) return;
+
   dragging.win.style.left = e.clientX - dragging.offsetX + "px";
   dragging.win.style.top = e.clientY - dragging.offsetY + "px";
 });
@@ -127,8 +144,8 @@ function maximizeWindow(appId) {
   if (!win) return;
 
   if (win.dataset.max === "true") {
-    win.style.width = "560px";
-    win.style.height = "450px";
+    win.style.width = "580px";
+    win.style.height = "460px";
     win.dataset.max = "false";
     emy("Window restored.");
   } else {
@@ -141,9 +158,9 @@ function maximizeWindow(appId) {
   }
 }
 
-/* ==========================
+/* ===============================
    DATABASES
-   ========================== */
+   =============================== */
 const encyclopediaDB = {
   plastic: {
     title: "Plastic",
@@ -172,7 +189,7 @@ const craftsDB = [
     steps: [
       "Fold the paper in half.",
       "Draw wing shape on folded side.",
-      "Cut along outline.",
+      "Cut along outline carefully.",
       "Open paper and decorate.",
       "Add thread to hang."
     ]
@@ -190,53 +207,22 @@ const craftsDB = [
   }
 ];
 
-/* ==========================
-   APPS
-   ========================== */
-
+/* ===============================
+   APPS HTML
+   =============================== */
 function assistantHTML() {
   return `
     <h2>Assistant</h2>
     <p style="opacity:.85;margin-top:6px;">
-      Ask Emmy about materials. Example: <b>plastic</b>, <b>glass</b>.
+      Ask about materials like <b>plastic</b>, <b>glass</b>, <b>paper</b>.
     </p>
 
     <div class="card" style="margin-top:14px;">
       <input id="assistantInput" placeholder="Type your topic..." />
-      <div id="assistantOut" style="margin-top:12px;opacity:.9;">
-        Waiting for input...
-      </div>
+      <div id="assistantOut" style="margin-top:12px;">Waiting...</div>
     </div>
   `;
 }
-
-document.addEventListener("input", (e) => {
-  if (e.target.id !== "assistantInput") return;
-
-  const q = e.target.value.trim().toLowerCase();
-  const out = document.getElementById("assistantOut");
-
-  if (!q) {
-    out.innerHTML = "Waiting for input...";
-    return;
-  }
-
-  const item = encyclopediaDB[q];
-  if (!item) {
-    out.innerHTML = `No result found for "<b>${q}</b>".`;
-    emy("I couldn't find that topic.");
-    return;
-  }
-
-  out.innerHTML = `
-    <h3>${item.title}</h3>
-    <p><b>How it's made:</b> ${item.made}</p>
-    <p style="margin-top:10px;"><b>Uses:</b> ${item.uses}</p>
-    <p style="margin-top:10px;"><b>Disposal:</b> ${item.dispose}</p>
-  `;
-
-  emy("Here is what I found.");
-});
 
 function worldClockHTML() {
   return `
@@ -260,65 +246,22 @@ function worldClockHTML() {
   `;
 }
 
-function startWorldClock() {
-  const select = document.getElementById("tzSelect");
-  const display = document.getElementById("worldTime");
-
-  if (!select || !display) return;
-
-  function tick() {
-    display.innerText = new Date().toLocaleTimeString("en-US", {
-      timeZone: select.value
-    });
-  }
-
-  tick();
-  setInterval(tick, 1000);
-}
-
 function encyclopediaHTML() {
   return `
     <h2>Encyclopedia</h2>
-    <p style="opacity:.85;margin-top:6px;">Search topics (expandable).</p>
+    <p style="opacity:.85;margin-top:6px;">Search topics.</p>
 
     <div class="card" style="margin-top:14px;">
-      <input id="encyInput" placeholder="Search (plastic, paper, glass...)" />
-      <div id="encyResult" style="margin-top:12px;opacity:.9;">
-        No topic selected.
-      </div>
+      <input id="encyInput" placeholder="Search: plastic, paper, glass..." />
+      <div id="encyResult" style="margin-top:12px;">No topic selected.</div>
     </div>
   `;
 }
 
-document.addEventListener("input", (e) => {
-  if (e.target.id !== "encyInput") return;
-
-  const q = e.target.value.trim().toLowerCase();
-  const out = document.getElementById("encyResult");
-
-  if (!q) {
-    out.innerHTML = "No topic selected.";
-    return;
-  }
-
-  const item = encyclopediaDB[q];
-  if (!item) {
-    out.innerHTML = `No result found for "<b>${q}</b>".`;
-    return;
-  }
-
-  out.innerHTML = `
-    <h3>${item.title}</h3>
-    <p><b>How it's made:</b> ${item.made}</p>
-    <p style="margin-top:10px;"><b>Uses:</b> ${item.uses}</p>
-    <p style="margin-top:10px;"><b>Disposal:</b> ${item.dispose}</p>
-  `;
-});
-
 function craftsHTML() {
   return `
     <h2>Crafts Studio</h2>
-    <p style="opacity:.85;margin-top:6px;">Choose a craft to view steps.</p>
+    <p style="opacity:.85;margin-top:6px;">Select a craft.</p>
 
     <div class="grid">
       ${craftsDB.map((c, i) => `
@@ -333,25 +276,10 @@ function craftsHTML() {
   `;
 }
 
-function openCraft(i) {
-  const detail = document.getElementById("craftDetail");
-  const craft = craftsDB[i];
-
-  detail.style.display = "block";
-  detail.innerHTML = `
-    <h3>${craft.title}</h3>
-    <ol style="margin-top:12px;padding-left:20px;">
-      ${craft.steps.map(s => `<li style="margin-top:8px;">${s}</li>`).join("")}
-    </ol>
-  `;
-
-  emy("Follow the steps carefully.");
-}
-
 function paintHTML() {
   return `
     <h2>Paint</h2>
-    <p style="opacity:.85;margin-top:6px;">Draw and save your art.</p>
+    <p style="opacity:.85;margin-top:6px;">Draw and save your artwork.</p>
 
     <div class="card" style="margin-top:14px;">
       <input type="color" id="paintColor" value="#7fd6d2" />
@@ -368,6 +296,189 @@ function paintHTML() {
   `;
 }
 
+function notesHTML() {
+  return `
+    <h2>Notes</h2>
+    <p style="opacity:.85;margin-top:6px;">Auto-save enabled.</p>
+
+    <textarea id="notesBox" style="margin-top:14px;height:260px;"></textarea>
+    <div style="margin-top:10px;opacity:.7;font-size:12px;">Saved locally.</div>
+  `;
+}
+
+function voiceHTML() {
+  return `
+    <h2>Voice Detector</h2>
+    <p style="opacity:.85;margin-top:6px;">Works best on Chrome.</p>
+
+    <div class="card" style="margin-top:14px;">
+      <button onclick="startVoice()">Start Listening</button>
+      <button style="margin-top:10px;" onclick="stopVoice()">Stop</button>
+
+      <div style="margin-top:14px;">
+        <b>Detected Speech:</b>
+        <div id="voiceText" style="margin-top:8px;">---</div>
+      </div>
+    </div>
+  `;
+}
+
+function fakeNewsHTML() {
+  return `
+    <h2>Fake News Detector</h2>
+    <p style="opacity:.85;margin-top:6px;">This is a smart analyzer tool.</p>
+
+    <div class="card" style="margin-top:14px;">
+      <textarea id="newsInput" placeholder="Paste a headline or paragraph..." style="height:140px;"></textarea>
+      <button style="margin-top:12px;" onclick="analyzeNews()">Analyze</button>
+      <div id="newsResult" style="margin-top:14px;">---</div>
+    </div>
+  `;
+}
+
+function creditsHTML() {
+  return `
+    <div style="height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;">
+      <div style="font-size:24px;font-weight:900;letter-spacing:2px;
+        background:linear-gradient(90deg,var(--cyan),var(--rose),var(--purple));
+        -webkit-background-clip:text;-webkit-text-fill-color:transparent;">
+        Created by Saanvi
+      </div>
+      <div style="margin-top:12px;opacity:.7;font-size:13px;">WebOS Pro v5</div>
+    </div>
+  `;
+}
+
+/* ===============================
+   APP OPEN SYSTEM
+   =============================== */
+function openApp(appId) {
+  const existing = document.querySelector(`.window[data-app="${appId}"]`);
+  if (existing) {
+    existing.style.display = "block";
+    focusWindow(existing);
+    return;
+  }
+
+  if (appId === "assistant") createWindow("assistant", "Assistant", assistantHTML());
+  if (appId === "worldclock") {
+    createWindow("worldclock", "World Clock", worldClockHTML());
+    startWorldClock();
+  }
+  if (appId === "encyclopedia") createWindow("encyclopedia", "Encyclopedia", encyclopediaHTML());
+  if (appId === "crafts") createWindow("crafts", "Crafts Studio", craftsHTML());
+  if (appId === "paint") {
+    createWindow("paint", "Paint", paintHTML());
+    setupPaint();
+  }
+  if (appId === "notes") {
+    createWindow("notes", "Notes", notesHTML());
+    setupNotes();
+  }
+  if (appId === "voice") createWindow("voice", "Voice Detector", voiceHTML());
+  if (appId === "fakenews") createWindow("fakenews", "Fake News Detector", fakeNewsHTML());
+  if (appId === "credits") createWindow("credits", "Credits", creditsHTML());
+
+  emy("Opened app.");
+}
+
+/* ===============================
+   WORLD CLOCK LOGIC
+   =============================== */
+function startWorldClock() {
+  const select = document.getElementById("tzSelect");
+  const display = document.getElementById("worldTime");
+
+  if (!select || !display) return;
+
+  function tick() {
+    display.innerText = new Date().toLocaleTimeString("en-US", {
+      timeZone: select.value
+    });
+  }
+
+  tick();
+  setInterval(tick, 1000);
+}
+
+/* ===============================
+   ENCYCLOPEDIA INPUT
+   =============================== */
+document.addEventListener("input", (e) => {
+  if (e.target.id === "assistantInput") {
+    const q = e.target.value.trim().toLowerCase();
+    const out = document.getElementById("assistantOut");
+
+    if (!q) {
+      out.innerText = "Waiting...";
+      return;
+    }
+
+    const item = encyclopediaDB[q];
+
+    if (!item) {
+      out.innerHTML = `No result found for "<b>${q}</b>".`;
+      emy("Not found.");
+      return;
+    }
+
+    out.innerHTML = `
+      <h3>${item.title}</h3>
+      <p><b>How it's made:</b> ${item.made}</p>
+      <p style="margin-top:10px;"><b>Uses:</b> ${item.uses}</p>
+      <p style="margin-top:10px;"><b>Disposal:</b> ${item.dispose}</p>
+    `;
+    emy("Here is what I found.");
+  }
+
+  if (e.target.id === "encyInput") {
+    const q = e.target.value.trim().toLowerCase();
+    const out = document.getElementById("encyResult");
+
+    if (!q) {
+      out.innerText = "No topic selected.";
+      return;
+    }
+
+    const item = encyclopediaDB[q];
+
+    if (!item) {
+      out.innerHTML = `No result found for "<b>${q}</b>".`;
+      return;
+    }
+
+    out.innerHTML = `
+      <h3>${item.title}</h3>
+      <p><b>How it's made:</b> ${item.made}</p>
+      <p style="margin-top:10px;"><b>Uses:</b> ${item.uses}</p>
+      <p style="margin-top:10px;"><b>Disposal:</b> ${item.dispose}</p>
+    `;
+  }
+});
+
+/* ===============================
+   CRAFT DETAILS
+   =============================== */
+function openCraft(i) {
+  const detail = document.getElementById("craftDetail");
+  const craft = craftsDB[i];
+
+  if (!detail) return;
+
+  detail.style.display = "block";
+  detail.innerHTML = `
+    <h3>${craft.title}</h3>
+    <ol style="margin-top:12px;padding-left:20px;">
+      ${craft.steps.map(s => `<li style="margin-top:8px;">${s}</li>`).join("")}
+    </ol>
+  `;
+
+  emy("Craft opened.");
+}
+
+/* ===============================
+   PAINT
+   =============================== */
 let painting = false;
 
 function setupPaint() {
@@ -400,10 +511,8 @@ function setupPaint() {
 function paintClear() {
   const canvas = document.getElementById("paintCanvas");
   if (!canvas) return;
-
   const ctx = canvas.getContext("2d");
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
   emy("Canvas cleared.");
 }
 
@@ -416,19 +525,12 @@ function paintSave() {
   link.href = canvas.toDataURL("image/png");
   link.click();
 
-  emy("Saved your artwork.");
+  emy("Saved artwork.");
 }
 
-function notesHTML() {
-  return `
-    <h2>Notes</h2>
-    <p style="opacity:.85;margin-top:6px;">Auto-save enabled.</p>
-
-    <textarea id="notesBox" style="margin-top:14px;height:260px;"></textarea>
-    <div style="margin-top:10px;opacity:.7;font-size:12px;">Saved locally.</div>
-  `;
-}
-
+/* ===============================
+   NOTES
+   =============================== */
 function setupNotes() {
   const box = document.getElementById("notesBox");
   if (!box) return;
@@ -440,168 +542,9 @@ function setupNotes() {
   });
 }
 
-const installedGames = JSON.parse(localStorage.getItem("installedGames") || "{}");
-
-function gamesHTML() {
-  return `
-    <h2>Games Hub</h2>
-    <p style="opacity:.85;margin-top:6px;">Install games before playing.</p>
-
-    <div class="grid">
-      <div class="grid-item">
-        <h3>Snake Game</h3>
-        <p style="opacity:.75;margin-top:6px;">
-          ${installedGames.snake ? "Installed ✅" : "Not installed ❌"}
-        </p>
-
-        ${
-          installedGames.snake
-            ? `<button style="margin-top:12px;width:100%;" onclick="openApp('snake')">Play</button>`
-            : `<button style="margin-top:12px;width:100%;" onclick="installGame('snake')">Install</button>`
-        }
-      </div>
-    </div>
-
-    <div id="installStatus" style="margin-top:14px;"></div>
-  `;
-}
-
-function installGame(id) {
-  const status = document.getElementById("installStatus");
-  if (!status) return;
-
-  let p = 0;
-  status.innerHTML = `
-    <div class="card">
-      Installing... <span id="installPercent">0%</span>
-      <div style="height:10px;background:rgba(255,255,255,0.12);border-radius:999px;margin-top:10px;overflow:hidden;">
-        <div id="installBar" style="height:100%;width:0%;background:linear-gradient(90deg,var(--cyan),var(--rose),var(--purple));"></div>
-      </div>
-    </div>
-  `;
-
-  const bar = document.getElementById("installBar");
-  const percent = document.getElementById("installPercent");
-
-  const t = setInterval(() => {
-    p += 10;
-    bar.style.width = p + "%";
-    percent.innerText = p + "%";
-
-    if (p >= 100) {
-      clearInterval(t);
-      installedGames[id] = true;
-      localStorage.setItem("installedGames", JSON.stringify(installedGames));
-      emy("Game installed.");
-      openApp("games");
-    }
-  }, 250);
-}
-
-function snakeHTML() {
-  return `
-    <h2>Snake</h2>
-    <p style="opacity:.85;margin-top:6px;">Arrow keys to move.</p>
-
-    <canvas id="snakeCanvas" width="420" height="280"
-      style="margin-top:14px;border-radius:18px;background:rgba(0,0,0,0.25);width:100%;"></canvas>
-
-    <div style="margin-top:10px;font-weight:800;">Score: <span id="snakeScore">0</span></div>
-  `;
-}
-
-let snakeInterval = null;
-
-function startSnake() {
-  const canvas = document.getElementById("snakeCanvas");
-  const scoreEl = document.getElementById("snakeScore");
-  if (!canvas || !scoreEl) return;
-
-  const ctx = canvas.getContext("2d");
-  const grid = 20;
-
-  let snake = [{ x: 200, y: 120 }];
-  let dir = { x: grid, y: 0 };
-  let food = { x: 260, y: 140 };
-  let score = 0;
-
-  function randomFood() {
-    food.x = Math.floor(Math.random() * (canvas.width / grid)) * grid;
-    food.y = Math.floor(Math.random() * (canvas.height / grid)) * grid;
-  }
-
-  document.onkeydown = (e) => {
-    if (e.key === "ArrowUp" && dir.y === 0) dir = { x: 0, y: -grid };
-    if (e.key === "ArrowDown" && dir.y === 0) dir = { x: 0, y: grid };
-    if (e.key === "ArrowLeft" && dir.x === 0) dir = { x: -grid, y: 0 };
-    if (e.key === "ArrowRight" && dir.x === 0) dir = { x: grid, y: 0 };
-  };
-
-  if (snakeInterval) clearInterval(snakeInterval);
-
-  snakeInterval = setInterval(() => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    let head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
-
-    if (head.x < 0) head.x = canvas.width - grid;
-    if (head.x >= canvas.width) head.x = 0;
-    if (head.y < 0) head.y = canvas.height - grid;
-    if (head.y >= canvas.height) head.y = 0;
-
-    for (let i = 1; i < snake.length; i++) {
-      if (head.x === snake[i].x && head.y === snake[i].y) {
-        snake = [{ x: 200, y: 120 }];
-        dir = { x: grid, y: 0 };
-        score = 0;
-        scoreEl.innerText = score;
-        randomFood();
-        emy("You crashed. Try again.");
-        return;
-      }
-    }
-
-    snake.unshift(head);
-
-    if (head.x === food.x && head.y === food.y) {
-      score++;
-      scoreEl.innerText = score;
-      randomFood();
-    } else {
-      snake.pop();
-    }
-
-    ctx.fillStyle = "#7fd6d2";
-    snake.forEach(p => ctx.fillRect(p.x, p.y, grid - 2, grid - 2));
-
-    ctx.fillStyle = "#d9a4b2";
-    ctx.fillRect(food.x, food.y, grid - 2, grid - 2);
-
-  }, 120);
-}
-
-/* ==========================
-   VOICE DETECTOR APP
-   ========================== */
-function voiceHTML() {
-  return `
-    <h2>Voice Detector</h2>
-    <p style="opacity:.85;margin-top:6px;">
-      This uses Speech Recognition (works best on Chrome).
-    </p>
-
-    <div class="card" style="margin-top:14px;">
-      <button onclick="startVoice()">Start Listening</button>
-      <button onclick="stopVoice()" style="margin-top:10px;">Stop</button>
-
-      <div style="margin-top:14px;opacity:.85;">
-        <b>Detected Speech:</b>
-        <div id="voiceText" style="margin-top:8px;">---</div>
-      </div>
-    </div>
-  `;
-}
-
+/* ===============================
+   VOICE DETECTOR
+   =============================== */
 let recognition = null;
 
 function startVoice() {
@@ -611,8 +554,8 @@ function startVoice() {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
   if (!SpeechRecognition) {
-    box.innerText = "Speech Recognition not supported in this browser.";
-    emy("Your browser doesn't support voice detection.");
+    box.innerText = "Speech Recognition not supported.";
+    emy("Not supported in this browser.");
     return;
   }
 
@@ -623,7 +566,7 @@ function startVoice() {
   recognition.onresult = (event) => {
     const text = event.results[event.results.length - 1][0].transcript;
     box.innerText = text;
-    emy("I heard: " + text);
+    emy("Detected voice input.");
   };
 
   recognition.start();
@@ -635,39 +578,23 @@ function stopVoice() {
   emy("Voice detector stopped.");
 }
 
-/* ==========================
-   FAKE NEWS DETECTOR APP
-   ========================== */
-function fakeNewsHTML() {
-  return `
-    <h2>Fake News Detector</h2>
-    <p style="opacity:.85;margin-top:6px;">
-      This is a smart analyzer (not 100% perfect truth checker).
-    </p>
-
-    <div class="card" style="margin-top:14px;">
-      <textarea id="newsInput" placeholder="Paste a news headline or paragraph..." style="height:140px;"></textarea>
-      <button style="margin-top:12px;width:100%;" onclick="analyzeNews()">Analyze</button>
-
-      <div id="newsResult" style="margin-top:14px;">---</div>
-    </div>
-  `;
-}
-
+/* ===============================
+   FAKE NEWS ANALYZER
+   =============================== */
 function analyzeNews() {
   const input = document.getElementById("newsInput").value.toLowerCase();
   const out = document.getElementById("newsResult");
 
   if (!input.trim()) {
-    out.innerHTML = "Please paste something first.";
-    emy("Paste a headline first.");
+    out.innerText = "Paste a headline first.";
+    emy("Paste something to analyze.");
     return;
   }
 
   const suspiciousWords = [
     "shocking", "unbelievable", "secret", "you won't believe", "miracle",
     "government hiding", "they don't want you to know", "100% proof",
-    "guaranteed", "must watch", "viral", "breaking"
+    "guaranteed", "viral", "breaking"
   ];
 
   const emotionalWords = [
@@ -699,7 +626,7 @@ function analyzeNews() {
 
   if (input.length < 40) {
     score -= 10;
-    found.push("Headline is too short (possible manipulation).");
+    found.push("Very short headline (possible manipulation).");
   }
 
   if (score < 0) score = 0;
@@ -710,71 +637,15 @@ function analyzeNews() {
 
   out.innerHTML = `
     <h3>Trust Score: ${score}/100</h3>
-    <p style="margin-top:6px;"><b>Status:</b> ${label}</p>
+    <p style="margin-top:8px;"><b>Status:</b> ${label}</p>
 
     <div style="margin-top:12px;">
-      <b>Detected Signals:</b>
-      <ul style="margin-top:8px;padding-left:18px;">
+      <b>Signals Detected:</b>
+      <ul style="margin-top:10px;padding-left:18px;">
         ${found.length ? found.map(f => `<li style="margin-top:6px;">${f}</li>`).join("") : "<li>No suspicious signals found.</li>"}
       </ul>
     </div>
   `;
 
-  emy("Analysis complete. Always verify sources.");
-}
-
-/* ==========================
-   CREDITS
-   ========================== */
-function creditsHTML() {
-  return `
-    <div style="height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;">
-      <div style="font-size:24px;font-weight:900;letter-spacing:2px;background:linear-gradient(90deg,var(--cyan),var(--rose),var(--purple));
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent;">
-        Created by Saanvi
-      </div>
-
-      <div style="margin-top:12px;opacity:.7;font-size:13px;">
-        WebOS Pro v5
-      </div>
-    </div>
-  `;
-}
-
-/* ==========================
-   APP LAUNCHER
-   ========================== */
-function openApp(appId) {
-  const existing = document.querySelector(`.window[data-app="${appId}"]`);
-  if (existing) {
-    existing.style.display = "block";
-    focusWindow(existing);
-    return;
-  }
-
-  if (appId === "assistant") createWindow("assistant", "Assistant", assistantHTML());
-  if (appId === "worldclock") {
-    createWindow("worldclock", "World Clock", worldClockHTML());
-    startWorldClock();
-  }
-  if (appId === "encyclopedia") createWindow("encyclopedia", "Encyclopedia", encyclopediaHTML());
-  if (appId === "crafts") createWindow("crafts", "Crafts Studio", craftsHTML());
-  if (appId === "paint") {
-    createWindow("paint", "Paint", paintHTML());
-    setupPaint();
-  }
-  if (appId === "notes") {
-    createWindow("notes", "Notes", notesHTML());
-    setupNotes();
-  }
-  if (appId === "games") createWindow("games", "Games Hub", gamesHTML());
-  if (appId === "snake") {
-    createWindow("snake", "Snake", snakeHTML());
-    startSnake();
-  }
-  if (appId === "voice") createWindow("voice", "Voice Detector", voiceHTML());
-  if (appId === "fakenews") createWindow("fakenews", "Fake News Detector", fakeNewsHTML());
-  if (appId === "credits") createWindow("credits", "Credits", creditsHTML());
-
-  emy("Opened " + appId + ".");
+  emy("Analysis complete.");
 }
